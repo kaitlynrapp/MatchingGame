@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+
 public class MatchingGame
 {
 		static ArrayList<String> loader = new ArrayList<String>();
@@ -10,7 +11,7 @@ public class MatchingGame
 		static int themeChoice;
 		static int counter = 0;
 		static Scanner userInput = new Scanner(System.in);
-		static int numberOFAttempts = 0;
+		public static int numberOFAttempts = 0;
 		
 		static String faces [] = {"(:, (:, ):, ):, :D, :D, (;, (;, <3, <3, |:, |:, /:, /:, :O, :O"};
 		static String animals [] = {"crab, crab, duck, duck, bird, bird, lion, lion, wolf, wolf, worm, worm, tuna, tuna, goat, goat"};
@@ -19,6 +20,15 @@ public class MatchingGame
 			{
 				orderAnswers();
 				fillGrid();
+				displayBoard();
+				
+				while(numberOfMatches < 8)
+					{
+						inputFirstChoice();
+						inputSecondChoice();
+						compareChoices();
+					}
+				
 				displayBoard();
 			}
 		public static void displayScore()
@@ -86,9 +96,9 @@ public class MatchingGame
 		loadCards();
 	}
 	
-	public static void loadcards()
+	public static void shuffle()
 	{
-		Collections.shuffle(loader);
+		shuffle(loader);
 	}
 	
 	public static void loadCards()
@@ -138,9 +148,9 @@ public class MatchingGame
 		
 		firstColumnChoice = Integer.parseInt(firstChoice.substring(1)) - 1;
 		System.out.println();
-		Layout.layout[firstRowChoice][firstColumnChoice] =
-						Themes.answerBoard[firstRowChoice][firstColumnChoice];
-		Layout.displayBoard();
+		displayBoard[firstRowChoice][firstColumnChoice] =
+						answerBoard[firstRowChoice][firstColumnChoice];
+		displayBoard();
 	}
 	
 	public static void inputSecondChoice()
@@ -177,16 +187,16 @@ public class MatchingGame
 		
 		secondColumnChoice = Integer.parseInt(secondChoice.substring(1)) - 1;
 		System.out.println();
-		Layout.layout[secondRowChoice][firstColumnChoice] =
-						Themes.answerBoard[secondRowChoice][seecondColumnChoice];
-		PlayGame.numberOfAttempts++;
-		Layout.displayBboard();
+		displayBoard[secondRowChoice][firstColumnChoice] =
+						answerBoard[secondRowChoice][seecondColumnChoice];
+		numberOfAttempts++;
+		displayBboard();
 	}
 	
 	public static void comparechoices()
 	{
-		if (Layout.layout[firstRowChoice][firstColumnChoice].equals)	
-								Layout.layout[secondRowChoice][secondColumnChoice]))
+		if (displayBoard[firstRowChoice][firstColumnChoice].equals)	
+								displayBoard[secondRowChoice][secondColumnChoice]))
 		{
 			numberOfMatches++;
 			if (numberOfMatches == 1)
@@ -208,9 +218,9 @@ public class MatchingGame
 			{
 				//handles exception
 			}
-			Layout.layout[firstRowChoice][firstColumnChoice] = "   ";
-			Layout.layout[secondRowChoice][secondColumnChoice] = "   ";
-			Layout.displayBboard();
+			layoutBoard[firstRowChoice][firstColumnChoice] = "   ";
+			layoutBoard[secondRowChoice][secondColumnChoice] = "   ";
+			displayBoard();
 		}
 	}
 	

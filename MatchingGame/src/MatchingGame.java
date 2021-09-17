@@ -1,25 +1,47 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class MatchingGame
-	{
+{
+		static ArrayList<String> loader = new ArrayList<String>();
 		static String [][] board = new String [4][4];
-		static int randomCards;
+		static String [][] answerBoard = new String [4][4];
+		static int themeChoice;
+		static int counter = 0;
 		static Scanner userInput = new Scanner(System.in);
-		private static int choice;
-		 
+		static int numberOfAttempts = 0;
+		static int numberOfMatches = 0;
+		
+		static int firstRowChoice, 
+		firstColumnChoice,
+		secondRowChoice,
+		secondColumnChoice;
+		
+		static String faces [] = {"(:, (:, ):, ):, :D, :D, (;, (;, <3, <3, |:, |:, /:, /:, :O, :O"};
+		static String animals [] = {"crab, crab, duck, duck, bird, bird, lion, lion, wolf, wolf, worm, worm, tuna, tuna, goat, goat"};
+		
 		public static void main(String[] args)
 			{
+				orderAnswers();
 				fillGrid();
 				displayBoard();
-				askPlayer();
-				askPlayer2();
-				//isMatch();
-				//while(!gameIsWon())
+				
+				while(numberOfMatches < 8)
 					{
-						askPlayer();
+						inputFirstChoice();
+						inputSecondChoice();
+						compareChoices();
 					}
+				
+				displayBoard();
 			}
-	
+		public static void displayScore()
+		{
+			System.out.println("You cleared the board! ");
+		}
+		
 		
 		public static void displayBoard()
 		{
@@ -46,193 +68,169 @@ public class MatchingGame
 				}
 		}
 		
-		public static void askPlayer()
-			{
-
-				System.out.println("Welcome user to the memory guessing game! The goal is to match two of the same cards. Once all matched you win! What card would you like to flip first?");
-				String choice = userInput.nextLine();
-				
-				if (choice.equals("A1"))
-					{
-				board[0][0] = "(:"; //A1 match1
-				displayBoard();
-					}
-				else if (choice.equals("A2"))
-					{
-				board[0][1] = "):"; //A2 match2
-				displayBoard();
-					}
-				else if (choice.equals("A3"))
-					{
-				board[0][2] = "|:"; //A3 match3
-				displayBoard();
-					}
-				else if (choice.equals("A4"))
-					{
-				board[0][3] = "(:"; //A4 match1
-				displayBoard();
-					}
-				else if (choice.equals("B1"))
-					{
-				board[1][0] = "(;"; //B1 match5
-				displayBoard();
-					}
-				else if (choice.equals("B2"))
-					{
-				board[1][1] = "(;"; //B2 match5
-				displayBoard();
-					}
-				else if (choice.equals("B3"))
-					{
-				board[1][2] = "/:"; //B3 match4
-				displayBoard();
-					}
-				else if (choice.equals("B4"))
-					{
-				board[1][3] = "<3"; //B4 match6
-				displayBoard();
-					}
-				else if (choice.equals("C1"))
-					{
-				board[2][0] = ":D"; //C1 match7
-				displayBoard();
-					}
-				else if (choice.equals("C2"))
-					{
-				board[2][1] = "):"; //C2 match2
-				displayBoard();
-					}
-				else if (choice.equals("C3"))
-					{
-				board[2][2] = "<3"; //C3 match6
-				displayBoard();
-					}
-				else if (choice.equals("C4"))
-					{
-				board[2][3] = "$D"; //C4 match8
-				displayBoard();
-					}
-				else if (choice.equals("D1"))
-					{
-				board[3][0] = "/:"; //D1 match4
-				displayBoard();
-					}
-				else if (choice.equals("D2"))
-					{
-				board[3][1] = "$D"; //D2 match8
-				displayBoard();
-					}
-				else if (choice.equals("D3"))
-					{
-				board[3][2] = ":D"; //D3 match7
-				displayBoard();
-					}
-				else if (choice.equals("D4"))
-					{
-				board[3][3] = "|:"; //D4 match3
-				displayBoard();
-					}
-				else
-					{
-						System.out.println("That is not a coordinate try again.");
-					}
-						}
-		
-		public static void askPlayer2()
+	public static void orderAnswers()
+	{
+		playerTheme();
+		shuffle();
+		loadCards();
+	}
+	
+	public static void playerTheme()
 		{
-			System.out.println("Select another card.");
-			String choice2 = userInput.nextLine();
+			System.out.println("Which theme would you like to choose from?");
+			System.out.println("(1) faces");
+			System.out.println("(2) animals");
+			String themeChoice = userInput.nextLine();
 			
-			if (choice2.equals("A1"))
+			switch (themeChoice)
+			{
+			case "1":
+			{
+				for(String a : faces)
 				{
-			board[0][0] = "(:"; //A1 match1
-			displayBoard();
+				loader.add(a);
 				}
-			else if (choice2.equals("A2"))
+				break;
+			}
+			case "2":
+			{
+				for(String a : animals)
 				{
-			board[0][1] = "):"; //A2 match2
-			displayBoard();
+					loader.add(a);
 				}
-			else if (choice2.equals("A3"))
-				{
-			board[0][2] = "|:"; //A3 match3
-			displayBoard();
-				}
-			else if (choice2.equals("A4"))
-				{
-			board[0][3] = "(:"; //A4 match1
-			displayBoard();
-				}
-			else if (choice2.equals("B1"))
-				{
-			board[1][0] = "(;"; //B1 match5
-			displayBoard();
-				}
-			else if (choice2.equals("B2"))
-				{
-			board[1][1] = "(;"; //B2 match5
-			displayBoard();
-				}
-			else if (choice2.equals("B3"))
-				{
-			board[1][2] = "/:"; //B3 match4
-			displayBoard();
-				}
-			else if (choice2.equals("B4"))
-				{
-			board[1][3] = "<3"; //B4 match6\
-			displayBoard();
-				}
-			else if (choice2.equals("C1"))
-				{
-			board[2][0] = ":D"; //C1 match7
-			displayBoard();
-				}
-			else if (choice2.equals("C2"))
-				{
-			board[2][1] = "):"; //C2 match2
-			displayBoard();
-				}
-			else if (choice2.equals("C3"))
-				{
-			board[2][2] = "<3"; //C3 match6
-			displayBoard();
-				}
-			else if (choice2.equals("C4"))
-				{
-			board[2][3] = "$D"; //C4 match8
-			displayBoard();
-				}
-			else if (choice2.equals("D1"))
-				{
-			board[3][0] = "/:"; //D1 match4
-			displayBoard();
-				}
-			else if (choice2.equals("D2"))
-				{
-			board[3][1] = "$D"; //D2 match8
-			displayBoard();
-				}
-			else if (choice2.equals("D3"))
-				{
-			board[3][2] = ":D"; //D3 match7
-			displayBoard();
-				}
-			else if (choice2.equals("D4"))
-				{
-			board[3][3] = "|:"; //D4 match3
-			displayBoard();
-				}
-			else
-				{
-					System.out.println("That is not a coordinate try again.");
-				}
-			displayBoard();
+				break;
+			}
+			}
+		}
+	
+	public static void shuffle()
+	{
+		shuffle(loader);
+	}
+	
+	public static void loadCards()
+	{
+		int counter = 0;
+		for(int i = 0; i < 4; i++)
+		{
+			for(int j = 0; j < 4; j++)
+			{
+				answerBoard[i][j] = loader.get(counter);
+				counter++;
+			}
+		}
+	}
+	
+	public static void inputFirstChoice()
+	{
+		System.out.println("Please input your choice of card to flip over (ex: A1)");
+		String firstChoice = userInput.nextLine();
+		switch (firstChoice.substring(0,1))
+		{
+		case "A";
+		case "a";
+		{
+			firstRowChoice = 0;
+			break;
+		}
+		case "B";
+		case "b";
+		{
+			firstRowChoice = 1;
+			break;
+		}
+		case "C";
+		case "c";
+		{
+			firstRowChoice = 2;
+			break;
+		}
+		case "D";
+		case "d";
+		{
+			firstRowChoice = 3;
+			break;
+		}
 		}
 		
-	
+		firstColumnChoice = Integer.parseInt(firstChoice.substring(1)) - 1;
+		System.out.println();
+		board[firstRowChoice][firstColumnChoice] =
+						answerBoard[firstRowChoice][firstColumnChoice];
+		displayBoard();
 	}
-
-
+	
+	public static void inputSecondChoice()
+	{
+		System.out.println("Please input your choice of card to flip over (ex: A1)");
+		String secondChoice = userInput.nextLine();
+		switch (secondChoice.substring(0,1))
+		{
+		case "A";
+		case "a";
+		{
+			secondRowChoice = 0;
+			break;
+		}
+		case "B";
+		case "b";
+		{
+			secondRowChoice = 1;
+			break;
+		}
+		case "C";
+		case "c";
+		{
+			secondRowChoice = 2;
+			break;
+		}
+		case "D";
+		case "d";
+		{
+			secondRowChoice = 3;
+			break;
+		}
+		}
+		
+		secondColumnChoice = Integer.parseInt(secondChoice.substring(1)) - 1;
+		System.out.println();
+		board[secondRowChoice][firstColumnChoice] =
+						answerBoard[secondRowChoice][secondColumnChoice];
+		numberOfAttempts++;
+		displayBoard();
 	}
 	
+	public static void compareChoices()
+	{
+		if (board[firstRowChoice][firstColumnChoice].equals)	
+								board[secondRowChoice][secondColumnChoice]))
+		{
+			numberOfMatches++;
+			if (numberOfMatches == 1)
+			{
+				System.out.println("You have " + numberOfMatches + " match.");
+			}
+			else
+			{
+				System.out.println("You have " + numberOfMatches + " matches.");
+			}
+		}
+		else
+		{
+			try
+			{
+				TimeUnit.SECONDS.sleep(2);
+			}
+			catch (InterruptedException e)
+			{
+				//handles exception
+			}
+			board[firstRowChoice][firstColumnChoice] = "   ";
+			board[secondRowChoice][secondColumnChoice] = "   ";
+			displayBoard();
+		}
+	}
+	
+	
+}
+

@@ -10,16 +10,21 @@ public class MatchingGame
 		static int themeChoice;
 		static int counter = 0;
 		static Scanner userInput = new Scanner(System.in);
-		private static int firstChoice;
-		private static int secondChoice;
+		static int numberOFAttempts = 0;
 		
 		static String faces [] = {"(:, (:, ):, ):, :D, :D, (;, (;, <3, <3, |:, |:, /:, /:, :O, :O"};
 		static String animals [] = {"crab, crab, duck, duck, bird, bird, lion, lion, wolf, wolf, worm, worm, tuna, tuna, goat, goat"};
 		
 		public static void main(String[] args)
 			{
-				
+				orderAnswers();
+				fillGrid();
+				displayBoard();
 			}
+		public static void displayScore()
+		{
+			System.out.println("You cleared the board! ");
+		}
 		
 		
 		public static void displayBoard()

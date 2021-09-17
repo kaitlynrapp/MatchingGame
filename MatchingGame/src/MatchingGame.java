@@ -105,7 +105,7 @@ public class MatchingGame
 	
 	public static void shuffle()
 	{
-		shuffle(loader);
+		Collections.shuffle(loader);
 	}
 	
 	public static void loadCards()
